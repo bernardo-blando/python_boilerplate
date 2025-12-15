@@ -45,7 +45,7 @@ def get_user(user_id):
 ### Separation of Concerns
 
 1. **Business logic** (e.g., `project_core/`) should have NO framework dependencies
-2. **App layer** (e.g., `fastapi_app/`) depends on business logic, not vice versa
+2. **App layer** (e.g., `app/`) depends on business logic, not vice versa
 3. Keep modules focused and single-purpose
 4. Prefer composition over inheritance
 

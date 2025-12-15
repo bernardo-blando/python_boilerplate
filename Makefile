@@ -43,18 +43,11 @@ format:
 # Run Application
 # =============================================================================
 
-run:
-	uv run uvicorn fastapi_app.main:app --reload --host $(HOST) --port $(PORT)
-
-# Alternative app runners (delete unused ones)
-run-gradio:
-	uv run python -m gradio_app.main
-
-run-streamlit:
-	uv run streamlit run src/streamlit_app/main.py --server.port $(PORT)
-
-run-fasthtml:
-	uv run python -m fasthtml_app.main
+run: # FastAPI:
+	uv run uvicorn app.main:app --reload --host $(HOST) --port $(PORT)
+# Gradio:   uv run python -m app.main
+# Streamlit: uv run streamlit run src/app/main.py --server.port $(PORT)
+# FastHTML: uv run python -m app.main
 
 # =============================================================================
 # Maintenance

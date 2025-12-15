@@ -22,12 +22,31 @@ make test
 
 ```
 src/
-├── project_core/       # Business logic
-└── fastapi_app/        # Web application
+├── project_core/       # Business logic (shared across frameworks)
+└── app/                # Web application (FastAPI by default)
 tests/
 ├── test_core/          # Business logic tests
 └── test_apps/          # App tests
 ```
+
+## Switching Frameworks
+
+This boilerplate uses FastAPI by default. Ready-to-use alternatives are in `app_alternatives/`:
+
+```bash
+# Switch to Gradio
+rm -rf src/app && cp -r app_alternatives/gradio src/app
+
+# Switch to Streamlit
+rm -rf src/app && cp -r app_alternatives/streamlit src/app
+
+# Switch to FastHTML
+rm -rf src/app && cp -r app_alternatives/fasthtml src/app
+```
+
+Then update dependencies in `pyproject.toml` and run `uv sync`.
+
+See [app_alternatives/README.md](app_alternatives/README.md) for full instructions.
 
 ## Development
 

@@ -30,31 +30,16 @@ find src tests -name "*.py" -exec sed -i '' 's/project_core/myproject/g' {} +
 sed -i '' 's/project_core/myproject/g' pyproject.toml
 ```
 
-## 3. Choose Your Framework
+## 3. Choose Your Framework (Optional)
 
-Keep only the app(s) you need:
+The boilerplate uses FastAPI by default. Ready-to-use alternatives are in `app_alternatives/`:
 
 ```bash
-# Example: Keep only FastAPI
-rm -rf src/gradio_app src/streamlit_app src/fasthtml_app
-rm -rf tests/test_apps/test_gradio tests/test_apps/test_streamlit tests/test_apps/test_fasthtml
+# Switch to Gradio, Streamlit, or FastHTML
+rm -rf src/app && cp -r app_alternatives/gradio src/app
 ```
 
-Then update `pyproject.toml` to remove unused dependencies:
-
-```toml
-# Remove the frameworks you deleted
-dependencies = [
-    "pydantic-settings>=2.6.0",
-    "fastapi>=0.115.0",        # Keep
-    "uvicorn[standard]>=0.32.0", # Keep
-    # "gradio>=5.0.0",          # Remove
-    # "streamlit>=1.40.0",      # Remove
-    # "python-fasthtml>=0.6.0", # Remove
-]
-```
-
-Also update `[tool.hatch.build.targets.wheel]` and `[tool.ruff.lint.isort]` sections.
+Then update `pyproject.toml` dependencies and `Makefile`. See [app_alternatives/README.md](app_alternatives/README.md).
 
 ## 4. Update Project Metadata
 
@@ -115,11 +100,11 @@ class MyModel(BaseModel):
 
 ### Add Configuration
 
-Settings go in `src/myproject/settings.py`:
+Config goes in `src/myproject/config.py`:
 
 ```python
-class Settings(BaseSettings):
-    # Add your settings
+class Config(BaseSettings):
+    # Add your config
     database_url: str = Field(default="sqlite:///./app.db")
     api_key: str | None = Field(default=None)
 ```
@@ -129,9 +114,9 @@ class Settings(BaseSettings):
 Import your business logic in the app layer:
 
 ```python
-# src/fastapi_app/main.py
+# src/app/main.py
 from myproject.services import my_business_function
-from myproject.settings import settings
+from myproject.config import config
 
 @app.get("/process/{data}")
 def process(data: str):
@@ -146,19 +131,19 @@ src/
 ├── myproject/           # Your business logic (rename from project_core)
 │   ├── __init__.py      # Exports
 │   ├── models.py        # Pydantic domain models
-│   ├── settings.py      # Configuration
+│   ├── config.py        # Configuration
 │   └── services.py      # Add your business logic here
-└── fastapi_app/         # Your chosen framework (or gradio_app, etc.)
+└── app/                 # Web application (FastAPI by default)
     ├── __init__.py
     ├── main.py          # App entry point
-    └── schemas.py       # API-specific schemas
+    └── schemas.py       # API-specific schemas (FastAPI)
 ```
 
 ## Common Tasks
 
 | Task | Command |
 |------|---------|
-| Run the app | `make run-fastapi` (or `run-gradio`, etc.) |
+| Run the app | `make run` |
 | Run tests | `make test` |
 | Run linting | `make lint` |
 | Format code | `make format` |
@@ -176,7 +161,6 @@ src/
 ## Checklist
 
 - [ ] Renamed `project_core` to your project name
-- [ ] Removed unused framework apps
 - [ ] Updated `pyproject.toml` (name, deps, build config)
 - [ ] Updated `README.md` with your project info
 - [ ] Ran `make setup` and `make test`

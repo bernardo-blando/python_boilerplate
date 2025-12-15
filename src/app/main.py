@@ -1,20 +1,20 @@
 """FastAPI application entry point.
 
-Run with: make run-fastapi
-Or: uvicorn fastapi_app.main:app --reload
+Run with: make run
+Or: uvicorn app.main:app --reload
 """
 
 from fastapi import FastAPI
 
-from fastapi_app.schemas import GreetingResponse, HealthResponse, MessageResponse
+from app.schemas import GreetingResponse, HealthResponse, MessageResponse
 from project_core import greet
-from project_core.settings import settings
+from project_core.config import config
 
 app = FastAPI(
-    title=settings.app_name,
+    title=config.app_name,
     description="A minimal API boilerplate",
-    version=settings.app_version,
-    debug=settings.debug,
+    version=config.app_version,
+    debug=config.debug,
 )
 
 

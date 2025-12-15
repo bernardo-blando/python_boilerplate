@@ -1,11 +1,11 @@
-"""Application settings using pydantic-settings.
+"""Application configuration using pydantic-settings.
 
 This module demonstrates the recommended pattern for configuration management.
-Settings are loaded from environment variables with type validation.
+Config values are loaded from environment variables with type validation.
 
 Usage:
-    from core.settings import settings
-    print(settings.app_name)
+    from project_core.config import config
+    print(config.app_name)
 """
 
 from functools import lru_cache
@@ -14,15 +14,15 @@ from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Settings(BaseSettings):
-    """Application settings loaded from environment variables.
+class Config(BaseSettings):
+    """Application config loaded from environment variables.
 
     Environment variables can be set directly or via a .env file.
     Variable names are case-insensitive and can use either format:
     - APP_NAME=MyApp
     - app_name=MyApp
 
-    To add new settings, simply add a new field:
+    To add new configurations, simply add a new field:
 
         database_url: str = Field(
             default="sqlite:///./app.db",
@@ -65,16 +65,16 @@ class Settings(BaseSettings):
 
 
 @lru_cache
-def get_settings() -> Settings:
-    """Get cached settings instance.
+def get_config() -> Config:
+    """Get cached config instance.
 
-    Using lru_cache ensures settings are only loaded once.
+    Using lru_cache ensures config values are only loaded once.
 
     Returns:
-        The application settings.
+        The application config.
     """
-    return Settings()
+    return Config()
 
 
 # Convenience alias for direct import
-settings = get_settings()
+config = get_config()
