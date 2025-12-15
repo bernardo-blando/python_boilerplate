@@ -1,4 +1,7 @@
-.PHONY: all install install-dev test test-cov lint format check run clean help
+.PHONY: all install setup test test-cov lint format run clean help
+
+HOST ?= 0.0.0.0
+PORT ?= 8000
 
 # Default target
 all: lint test
@@ -7,98 +10,60 @@ all: lint test
 # Installation
 # =============================================================================
 
-## Install production dependencies
 install:
 	uv sync
 
-## Install all dependencies including dev tools
-install-dev:
+setup:
 	uv sync --all-extras
-
-## Install pre-commit hooks
-install-hooks:
 	uv run pre-commit install
-
-## Full development setup
-setup: install-dev install-hooks
 
 # =============================================================================
 # Testing
 # =============================================================================
 
-## Run tests
 test:
 	uv run pytest
 
-## Run tests with coverage report
 test-cov:
 	uv run pytest --cov=src --cov-report=term-missing --cov-report=html
-
-## Run tests matching a pattern (usage: make test-k PATTERN=test_name)
-test-k:
-	uv run pytest -k "$(PATTERN)"
 
 # =============================================================================
 # Code Quality
 # =============================================================================
 
-## Run all linting checks (ruff + mypy)
-lint: lint-ruff lint-mypy
-
-## Run ruff linter
-lint-ruff:
+lint:
 	uv run ruff check src tests
+	uv run mypy src/project_core
 
-## Run mypy type checker
-lint-mypy:
-	uv run mypy src
-
-## Format code with ruff
 format:
 	uv run ruff format src tests
 	uv run ruff check --fix src tests
 
-## Check formatting without making changes
-check:
-	uv run ruff format --check src tests
-	uv run ruff check src tests
-	uv run mypy src
-
 # =============================================================================
-# Running the Application
+# Run Application
 # =============================================================================
 
-## Run the API server (development mode with auto-reload)
 run:
-	uv run uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
+	uv run uvicorn fastapi_app.main:app --reload --host $(HOST) --port $(PORT)
 
-## Run the API server (production mode)
-run-prod:
-	uv run uvicorn api.main:app --host 0.0.0.0 --port 8000
+# Alternative app runners (delete unused ones)
+run-gradio:
+	uv run python -m gradio_app.main
 
-## Run the CLI entry point (if configured)
-run-cli:
-	uv run python -m core.hello
+run-streamlit:
+	uv run streamlit run src/streamlit_app/main.py --server.port $(PORT)
+
+run-fasthtml:
+	uv run python -m fasthtml_app.main
 
 # =============================================================================
 # Maintenance
 # =============================================================================
 
-## Remove all generated files
 clean:
-	rm -rf .pytest_cache
-	rm -rf .mypy_cache
-	rm -rf .ruff_cache
-	rm -rf .coverage
-	rm -rf htmlcov
-	rm -rf dist
-	rm -rf build
-	rm -rf *.egg-info
-	rm -rf src/*.egg-info
+	rm -rf .pytest_cache .mypy_cache .ruff_cache .coverage htmlcov dist build
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
-	find . -type f -name "*.pyc" -delete
 
-## Update dependencies
 update:
 	uv lock --upgrade
 
@@ -106,10 +71,11 @@ update:
 # Help
 # =============================================================================
 
-## Show this help message
 help:
-	@echo "Available targets:"
-	@echo ""
-	@grep -E '^## ' $(MAKEFILE_LIST) | sed 's/## /  /'
-	@echo ""
-	@echo "Usage: make [target]"
+	@echo "make setup    - Install dependencies and pre-commit hooks"
+	@echo "make test     - Run tests"
+	@echo "make lint     - Run ruff and mypy"
+	@echo "make format   - Format code"
+	@echo "make run      - Start the application"
+	@echo "make clean    - Remove generated files"
+	@echo "make all      - Run lint + test"

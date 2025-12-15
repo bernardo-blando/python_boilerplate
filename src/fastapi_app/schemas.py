@@ -1,12 +1,4 @@
-"""API request/response schemas.
-
-This module contains Pydantic models specifically for API serialization.
-These may mirror domain models but are tailored for API contracts.
-
-Separation of concerns:
-- core/models.py: Domain models (business logic)
-- api/schemas.py: API contracts (serialization/deserialization)
-"""
+"""FastAPI request/response schemas."""
 
 from pydantic import BaseModel, ConfigDict, Field
 

@@ -1,8 +1,12 @@
-"""FastAPI application entry point."""
+"""FastAPI application entry point.
+
+Run with: make run-fastapi
+Or: uvicorn fastapi_app.main:app --reload
+"""
 
 from fastapi import FastAPI
 
-from api.schemas import GreetingResponse, HealthResponse, MessageResponse
+from fastapi_app.schemas import GreetingResponse, HealthResponse, MessageResponse
 from project_core import greet
 from project_core.settings import settings
 
@@ -22,14 +26,7 @@ def root() -> MessageResponse:
 
 @app.get("/greet/{name}", response_model=GreetingResponse)
 def greet_endpoint(name: str) -> GreetingResponse:
-    """Greet a user by name.
-
-    Args:
-        name: The name to greet.
-
-    Returns:
-        A GreetingResponse with the greeting message.
-    """
+    """Greet a user by name."""
     greeting = greet(name)
     return GreetingResponse(message=greeting.message, name=greeting.name)
 

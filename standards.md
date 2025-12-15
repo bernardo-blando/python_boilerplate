@@ -40,26 +40,12 @@ def get_user(user_id):
 - Test functions may omit return type hints
 - Lambda functions (when obvious)
 
-## Project Structure
+## Architecture
 
-### Package Organization
+### Separation of Concerns
 
-```
-src/
-├── core/           # Business logic (domain layer)
-│   ├── models/     # Domain models
-│   ├── services/   # Business services
-│   └── utils/      # Shared utilities
-└── api/            # Presentation layer
-    ├── routes/     # API endpoints
-    ├── schemas/    # Request/Response models
-    └── middleware/ # API middleware
-```
-
-### Guidelines
-
-1. **core** should have NO dependencies on **api**
-2. **api** depends on **core** for business logic
+1. **Business logic** (e.g., `project_core/`) should have NO framework dependencies
+2. **App layer** (e.g., `fastapi_app/`) depends on business logic, not vice versa
 3. Keep modules focused and single-purpose
 4. Prefer composition over inheritance
 
@@ -112,11 +98,8 @@ def test_get_user():
 | `feat` | New feature |
 | `fix` | Bug fix |
 | `docs` | Documentation changes |
-| `style` | Code style changes (formatting) |
 | `refactor` | Code refactoring |
-| `test` | Adding or updating tests |
-| `chore` | Maintenance tasks |
-| `perf` | Performance improvements |
+
 
 ### Examples
 
