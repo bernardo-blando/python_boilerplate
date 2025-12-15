@@ -14,14 +14,18 @@ def test_greet_endpoint(client: TestClient) -> None:
     """Test the greet endpoint with a name."""
     response = client.get("/greet/Alice")
     assert response.status_code == 200
-    assert response.json() == {"message": "Hello, Alice!"}
+    data = response.json()
+    assert data["message"] == "Hello, Alice!"
+    assert data["name"] == "Alice"
 
 
 def test_greet_endpoint_special_characters(client: TestClient) -> None:
     """Test the greet endpoint with special characters."""
     response = client.get("/greet/John%20Doe")
     assert response.status_code == 200
-    assert response.json() == {"message": "Hello, John Doe!"}
+    data = response.json()
+    assert data["message"] == "Hello, John Doe!"
+    assert data["name"] == "John Doe"
 
 
 def test_health_endpoint(client: TestClient) -> None:

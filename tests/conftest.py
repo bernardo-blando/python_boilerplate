@@ -34,16 +34,3 @@ def mock_service() -> MagicMock:
     mock.get_data.return_value = {"key": "value"}
     mock.is_available.return_value = True
     return mock
-
-
-@pytest.fixture
-def sample_user_data() -> dict[str, str]:
-    """Provide sample user data for testing.
-
-    Returns:
-        A dictionary with sample user information.
-    """
-    return {
-        "name": "Test User",
-        "email": "test@example.com",
-    }

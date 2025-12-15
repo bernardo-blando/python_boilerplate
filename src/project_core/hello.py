@@ -1,21 +1,24 @@
 """Hello world module demonstrating basic business logic."""
 
+from project_core.models import Greeting
 
-def greet(name: str = "World") -> str:
+
+def greet(name: str = "World") -> Greeting:
     """Return a greeting message.
 
     Args:
         name: The name to greet. Defaults to "World".
 
     Returns:
-        A greeting string.
+        A Greeting model with the message.
     """
-    return f"Hello, {name}!"
+    return Greeting.create(name)
 
 
 def main() -> None:
     """Entry point for the hello module."""
-    print(greet())
+    greeting = greet()
+    print(greeting.message)
 
 
 if __name__ == "__main__":

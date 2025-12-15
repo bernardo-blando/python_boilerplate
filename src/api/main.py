@@ -2,35 +2,39 @@
 
 from fastapi import FastAPI
 
-from core import greet
+from api.schemas import GreetingResponse, HealthResponse, MessageResponse
+from project_core import greet
+from project_core.settings import settings
 
 app = FastAPI(
-    title="Boilerplate API",
+    title=settings.app_name,
     description="A minimal API boilerplate",
-    version="0.1.0",
+    version=settings.app_version,
+    debug=settings.debug,
 )
 
 
-@app.get("/")
-def root() -> dict[str, str]:
+@app.get("/", response_model=MessageResponse)
+def root() -> MessageResponse:
     """Root endpoint returning a welcome message."""
-    return {"message": "Welcome to the API"}
+    return MessageResponse(message="Welcome to the API")
 
 
-@app.get("/greet/{name}")
-def greet_endpoint(name: str) -> dict[str, str]:
+@app.get("/greet/{name}", response_model=GreetingResponse)
+def greet_endpoint(name: str) -> GreetingResponse:
     """Greet a user by name.
 
     Args:
         name: The name to greet.
 
     Returns:
-        A dictionary with the greeting message.
+        A GreetingResponse with the greeting message.
     """
-    return {"message": greet(name)}
+    greeting = greet(name)
+    return GreetingResponse(message=greeting.message, name=greeting.name)
 
 
-@app.get("/health")
-def health() -> dict[str, str]:
+@app.get("/health", response_model=HealthResponse)
+def health() -> HealthResponse:
     """Health check endpoint."""
-    return {"status": "healthy"}
+    return HealthResponse(status="healthy")
