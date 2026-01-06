@@ -6,7 +6,7 @@ Or: uvicorn app.main:app --reload
 
 from fastapi import FastAPI
 
-from app.schemas import GreetingResponse, HealthResponse, MessageResponse
+from app.models import GreetingResponse, HealthResponse, MessageResponse
 from project_core import greet
 from project_core.config import config
 

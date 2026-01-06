@@ -1,6 +1,6 @@
 """Tests for FastAPI schemas."""
 
-from app.schemas import GreetingResponse, HealthResponse, MessageResponse
+from app.models import GreetingResponse, HealthResponse, MessageResponse
 
 
 class TestResponseSchemas:
