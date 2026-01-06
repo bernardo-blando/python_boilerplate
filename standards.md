@@ -69,7 +69,6 @@ def test_get_user():
 
 ### Coverage
 
-- Minimum coverage: 80%
 - All new features must include tests
 - Critical paths should have integration tests
 
@@ -79,32 +78,22 @@ def test_get_user():
 - Use factory fixtures for complex objects
 - Prefer fixtures over setup/teardown
 
-## Git Commit Messages
+## Git
 
-### Format
-
-```
-<type>(<scope>): <subject>
-
-<body>
-
-<footer>
-```
-
-### Types
+### Branch Prefixes
 
 | Type | Description |
 |------|-------------|
-| `feat` | New feature |
+| `feature` | New feature |
 | `fix` | Bug fix |
 | `docs` | Documentation changes |
 | `refactor` | Code refactoring |
 
 
-### Examples
+### Commit Examples
 
 ```
-feat(api): add user registration endpoint
+added user registration endpoint
 
 - Add POST /users endpoint
 - Add email validation
@@ -114,7 +103,7 @@ Closes #123
 ```
 
 ```
-fix(core): handle empty user list in pagination
+handle empty user list in pagination
 
 Previously, requesting page 2 with no users would raise
 IndexError. Now returns empty list with correct metadata.
@@ -122,7 +111,6 @@ IndexError. Now returns empty list with correct metadata.
 
 ### Guidelines
 
-- Use imperative mood: "add" not "added" or "adds"
 - First line max 72 characters
 - Reference issues when applicable
 - Explain **why**, not just **what**
