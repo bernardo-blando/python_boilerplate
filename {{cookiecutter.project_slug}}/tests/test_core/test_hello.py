@@ -2,8 +2,8 @@
 
 from unittest.mock import MagicMock
 
-from project_core.hello import greet
-from project_core.models import Greeting
+from {{ cookiecutter.package_name }}.hello import greet
+from {{ cookiecutter.package_name }}.models import Greeting
 
 
 def test_greet_default() -> None:

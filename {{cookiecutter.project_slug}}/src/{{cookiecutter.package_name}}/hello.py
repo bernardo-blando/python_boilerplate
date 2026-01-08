@@ -1,6 +1,6 @@
 """Hello world module demonstrating basic business logic."""
 
-from project_core.models import Greeting
+from {{ cookiecutter.package_name }}.models import Greeting
 
 
 def greet(name: str = "World") -> Greeting:

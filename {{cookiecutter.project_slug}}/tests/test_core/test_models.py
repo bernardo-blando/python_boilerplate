@@ -3,7 +3,7 @@
 import pytest
 from pydantic import ValidationError
 
-from project_core.models import Greeting
+from {{ cookiecutter.package_name }}.models import Greeting
 
 
 class TestGreeting:

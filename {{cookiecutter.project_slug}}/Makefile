@@ -33,7 +33,7 @@ test-cov:
 
 lint:
 	uv run ruff check src tests
-	uv run mypy src/project_core
+	uv run mypy src/{{ cookiecutter.package_name }}
 
 format:
 	uv run ruff format src tests
@@ -43,11 +43,29 @@ format:
 # Run Application
 # =============================================================================
 
-run: # FastAPI:
+{% if cookiecutter.framework == 'fastapi' %}
+run:
 	uv run uvicorn app.main:app --reload --host $(HOST) --port $(PORT)
-# Gradio:   uv run python -m app.main
-# Streamlit: uv run streamlit run src/app/main.py --server.port $(PORT)
-# FastHTML: uv run python -m app.main
+{% elif cookiecutter.framework == 'gradio' %}
+run:
+	uv run python -m app.main
+{% elif cookiecutter.framework == 'streamlit' %}
+run:
+	uv run streamlit run src/app/main.py --server.port $(PORT)
+{% elif cookiecutter.framework == 'fasthtml' %}
+run:
+	uv run python -m app.main
+{% endif %}
+
+# =============================================================================
+# Docker
+# =============================================================================
+
+docker-build:
+	docker build -t {{ cookiecutter.project_slug }} .
+
+docker-run:
+	docker run -p $(PORT):8000 {{ cookiecutter.project_slug }}
 
 # =============================================================================
 # Maintenance
@@ -65,10 +83,12 @@ update:
 # =============================================================================
 
 help:
-	@echo "make setup    - Install dependencies and pre-commit hooks"
-	@echo "make test     - Run tests"
-	@echo "make lint     - Run ruff and mypy"
-	@echo "make format   - Format code"
-	@echo "make run      - Start the application"
-	@echo "make clean    - Remove generated files"
-	@echo "make all      - Run lint + test"
+	@echo "make setup       - Install dependencies and pre-commit hooks"
+	@echo "make test        - Run tests"
+	@echo "make lint        - Run ruff and mypy"
+	@echo "make format      - Format code"
+	@echo "make run         - Start the application"
+	@echo "make docker-build - Build Docker image"
+	@echo "make docker-run  - Run Docker container"
+	@echo "make clean       - Remove generated files"
+	@echo "make all         - Run lint + test"

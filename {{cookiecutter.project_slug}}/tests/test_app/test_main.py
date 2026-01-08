@@ -1,3 +1,4 @@
+{% if cookiecutter.framework == 'fastapi' %}
 """Tests for the FastAPI application endpoints."""
 
 from fastapi.testclient import TestClient
@@ -37,3 +38,15 @@ def test_health_endpoint() -> None:
     response = client.get("/health")
     assert response.status_code == 200
     assert response.json() == {"status": "healthy"}
+{% else %}
+"""Tests for the {{ cookiecutter.framework | capitalize }} application.
+
+Note: {{ cookiecutter.framework | capitalize }} applications typically require
+different testing approaches. Add framework-specific tests as needed.
+"""
+
+
+def test_placeholder() -> None:
+    """Placeholder test - replace with framework-specific tests."""
+    assert True
+{% endif %}

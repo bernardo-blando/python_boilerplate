@@ -4,7 +4,7 @@ This module demonstrates the recommended pattern for configuration management.
 Config values are loaded from environment variables with type validation.
 
 Usage:
-    from project_core.config import config
+    from {{ cookiecutter.package_name }}.config import config
     print(config.app_name)
 """
 
@@ -39,7 +39,7 @@ class Config(BaseSettings):
 
     # Application
     app_name: str = Field(
-        default="Boilerplate API",
+        default="{{ cookiecutter.project_name }}",
         description="Application name shown in docs",
     )
     app_version: str = Field(
